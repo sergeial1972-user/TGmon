@@ -1,0 +1,11 @@
+[project]
+name = "tgmon"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "aiogram>=3.23.0",
+    "dotenv>=0.9.9",
+    "ping3>=5.1.5",
+]
