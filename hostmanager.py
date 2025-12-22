@@ -97,3 +97,4 @@ class Manager:
                 return host.port
             else:
                 print(f"Host '{name}' not found")
+
