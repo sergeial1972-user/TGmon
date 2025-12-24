@@ -10,12 +10,12 @@ class Host:
 
 class Manager:
     def __init__(self, hosts=None, filename='hosts.json', verbose=False):
-        self.filename = filename
+        self.filename  = filename
         self.hosts = hosts if hosts is not None else []
         #load hosts json
         self.load_hosts(verbose=verbose)
 
-    def save_hosts(self):  # ← ЭТОГО НЕ ХВАТАЕТ!
+    def save_hosts(self):
         """save hosts to json file"""
         data = [{'name': h.name, 'ip': h.ip, 'port': h.port} for h in self.hosts]
         with open(self.filename, 'w') as f:
@@ -54,47 +54,42 @@ class Manager:
             raise Exception(f"Host '{name}' already exists")
         self.hosts.append(host)
         self.save_hosts()
+        self.reload()
 
     def remove_host(self, name):
         initial_count = len(self.hosts)
         self.hosts[:] = [h for h in self.hosts if h.name != name]
         if len(self.hosts) < initial_count:
             print(f"Host '{name}' removed")
-            self.save_hosts()  # ← Этот метод вызывается здесь
+            self.save_hosts()
+            self.reload()
         else:
             print(f"Host '{name}' not found")
-
-    def change_host(self, name, ip=None, port=None):
-        was_updated = False
-
-        self.hosts[:] = [
-            Host(name, ip if ip is not None else h.ip, port if port is not None else h.port)
-            if h.name == name else h
-            for h in self.hosts
-        ]
 
     def get_hosts(self):
         for host in self.hosts:
             print(f"  {host.name}: {host.ip}:{host.port}")
         return self.hosts
 
-    def get_ips(self):
-        return [host.ip for host in self.hosts]
+    #def get_ips(self):
+        #return [host.ip for host in self.hosts]
 
     def get_host_ip(self, name):
         for host in self.hosts:
             if host.name == name:
                 return host.ip
-            else:
-                print(f"Host '{name}' not found")
+        return None
 
-    def get_ports(self):
+    #def get_ports(self):
         return [host.port for host in self.hosts]
 
     def get_host_port(self, name):
         for host in self.hosts:
             if host.name == name:
                 return host.port
-            else:
-                print(f"Host '{name}' not found")
+        return None
 
+    def reload(self, verbose=False):
+        """reload hosts from json file"""
+        self.hosts.clear()
+        self.load_hosts(verbose=False)
