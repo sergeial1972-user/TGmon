@@ -14,6 +14,7 @@ def ping_host(host):
 
 
 def ping_hosts():
+    manager.reload()
     result = {}
     for host_obj in manager.hosts:
         host = host_obj.name if hasattr(host_obj, 'name') else str(host_obj)
