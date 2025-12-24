@@ -1,2 +1,3 @@
 .env
 hosts.json
+__pycache__/
