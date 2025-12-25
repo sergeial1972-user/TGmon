@@ -5,17 +5,6 @@ from dotenv import load_dotenv
 import logging
 import  hostmanager
 
-
-
-
-
-
-
-
-
-
-
-
 #aiogram imports
 from aiogram import types, Bot, Dispatcher
 from aiogram.filters import CommandStart
