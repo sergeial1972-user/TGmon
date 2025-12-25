@@ -3,7 +3,7 @@ from aiogram import Router
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram import types
-from aiogram.filters import Command
+from aiogram.filters import Command, CommandObject
 import hostmanager
 
 
@@ -58,10 +58,20 @@ async def process_port(message: types.Message, state: FSMContext):
 
 
 """removing host via hostmanager (args)"""
+
+
 @router.message(Command("rmhost"))
-async def remove_host(message: types.Message, state: FSMContext):
-    args = ommand.args("rmhost")
-    if not args:
-        await message.answer("Enter host name like arg", parse_mode="Markdown")
+async def remove_host(message: types.Message, command: CommandObject, state: FSMContext):
+    args = command.args
+
+    if not args or not args.strip():
+        await message.answer("enter host name as argument")
         return
-    parts = args.split()
+
+    hostname = args.strip()  # ✅ Исправлено: args вместо command
+
+    try:
+        manager.remove_host(hostname)
+        await message.answer(f"✅ Хост `{hostname}` удалён", parse_mode="Markdown")
+    except Exception as e:  # ✅ Завершен try-except
+        await message.answer(f"❌ Ошибка удаления `{hostname}`:\n`{e}`", parse_mode="Markdown")

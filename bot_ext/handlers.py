@@ -4,7 +4,7 @@ import tools
 
 #aiogram imports
 from aiogram import Router
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, message
 from aiogram import F
 
@@ -18,8 +18,8 @@ router = Router()
 async def main_menu(message: Message):
     await message.answer(text="main menu", reply_markup=kb.main_menu_keyboard)
 
-#/status
-@router.message(F.text == "📊 Status")  # Точно как текст кнопки!
+@router.message(F.text == "📊 Status")
+@router.message(Command("status"))
 async def status_handler(message: Message):
     ping_results = tools.ping_hosts()
     status_text = ""
