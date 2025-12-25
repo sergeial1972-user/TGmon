@@ -68,10 +68,10 @@ async def remove_host(message: types.Message, command: CommandObject, state: FSM
         await message.answer("enter host name as argument")
         return
 
-    hostname = args.strip()  # ✅ Исправлено: args вместо command
+    hostname = args.strip()
 
     try:
         manager.remove_host(hostname)
-        await message.answer(f"✅ Хост `{hostname}` удалён", parse_mode="Markdown")
-    except Exception as e:  # ✅ Завершен try-except
-        await message.answer(f"❌ Ошибка удаления `{hostname}`:\n`{e}`", parse_mode="Markdown")
+        await message.answer(f"✅ `{hostname}` Deleted", parse_mode="Markdown")
+    except Exception as e:
+        await message.answer(f"❌ {e}", parse_mode="Markdown")
